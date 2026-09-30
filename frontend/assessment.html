@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Health Assessment | RuralHealthAI</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f9f7;
+            color: #16332a;
+        }
+
+
+        /* HEADER */
+
+        header {
+            background: white;
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid #e5ebe8;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            color: #16855b;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #16855b;
+            font-weight: bold;
+        }
+
+
+        /* PAGE */
+
+        .page {
+            max-width: 950px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+
+        /* TITLE */
+
+        .title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .title h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .title p {
+            color: #68756f;
+            font-size: 16px;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+            padding: 35px;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 15px 40px rgba(22, 51, 42, 0.08);
+
+            border: 1px solid #e5eee9;
+        }
+
+
+        /* SECTION */
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 21px;
+            margin-bottom: 20px;
+
+            color: #16855b;
+        }
+
+
+        /* GRID */
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        /* INPUT */
+
+        .field label {
+            display: block;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #d8e3dd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            background: #fbfdfc;
+
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #16855b;
+        }
+
+
+        /* YES NO */
+
+        .choice {
+            display: flex;
+            gap: 10px;
+        }
+
+        .choice label {
+            flex: 1;
+
+            border: 1px solid #d8e3dd;
+
+            border-radius: 9px;
+
+            padding: 12px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            font-weight: normal;
+
+            color: #4f5d56;
+        }
+
+        .choice input {
+            display: none;
+        }
+
+        .choice input:checked + span {
+            background: #e6f7ef;
+            color: #16855b;
+            font-weight: bold;
+        }
+
+        .choice label span {
+            display: block;
+
+            padding: 2px;
+        }
+
+
+        /* BUTTON */
+
+        .submit-btn {
+            width: 100%;
+
+            padding: 17px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background: #16855b;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #106c49;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* NOTICE */
+
+        .notice {
+            margin-top: 20px;
+
+            background: #f0f7f4;
+
+            border-left: 4px solid #16855b;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            color: #65736c;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* RESULT */
+
+        #result {
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+        }
+
+        .result-title {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 23px;
+            }
+
+            .title h1 {
+                font-size: 30px;
+            }
+
+            header {
+                padding: 16px 5%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            🌿 RuralHealthAI
+        </div>
+
+        <a
+            href="index.html"
+            class="back-btn">
+
+            ← Back to Home
+
+        </a>
+
+    </header>
+
+
+
+    <!-- PAGE -->
+
+    <main class="page">
+
+
+        <!-- TITLE -->
+
+        <div class="title">
+
+            <h1>
+                🩺 Health Assessment
+            </h1>
+
+            <p>
+                Provide your symptoms and basic health information
+                for an AI-assisted risk assessment.
+            </p>
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <div class="form-card">
+
+
+            <!-- BASIC INFORMATION -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    👤 Basic Information
+                </h2>
+
+                <div class="grid">
+
+                    <div class="field">
+
+                        <label>
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            min="1"
+                            max="120"
+                            placeholder="Enter your age">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Symptom Duration
+                        </label>
+
+                        <input
+                            type="number"
+                            id="symptom_duration"
+                            min="0"
+                            max="30"
+                            placeholder="Number of days">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SYMPTOMS -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    🩺 Symptoms
+                </h2>
+
+
+                <div class="grid">
+
+
+                    <!-- FEVER -->
+
+                    <div class="field">
+
+                        <label>
+                            Fever
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="fever"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="fever"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- COUGH -->
+
+                    <div class="field">
+
+                        <label>
+                            Cough
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="cough"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="cough"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BREATHING -->
+
+                    <div class="field">
+
+                        <label>
+                            Breathing Difficulty
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="breathing_difficulty"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="breathing_difficulty"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CHEST -->
+
+                    <div class="field">
+
+                        <label>
+                            Chest Discomfort
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="chest_discomfort"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="chest_discomfort"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- VOMITING -->
+
+                    <div class="field">
+
+                        <label>
+                            Vomiting
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="vomiting"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="vomiting"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DIARRHEA -->
+
+                    <div class="field">
+
+                        <label>
+                            Diarrhea
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="diarrhea"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="diarrhea"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DIZZINESS -->
+
+                    <div class="field">
+
+                        <label>
+                            Dizziness
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="dizziness"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="dizziness"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FAINTING -->
+
+                    <div class="field">
+
+                        <label>
+                            Fainting
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="fainting"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="fainting"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- WEAKNESS -->
+
+                    <div class="field">
+
+                        <label>
+                            Severe Weakness
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="severe_weakness"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="severe_weakness"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDICAL HISTORY -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    📋 Medical History
+                </h2>
+
+
+                <div class="grid">
+
+
+                    <!-- DIABETES -->
+
+                    <div class="field">
+
+                        <label>
+                            Diabetes
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="diabetes"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="diabetes"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- HYPERTENSION -->
+
+                    <div class="field">
+
+                        <label>
+                            Hypertension
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="hypertension"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="hypertension"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- HEART DISEASE -->
+
+                    <div class="field">
+
+                        <label>
+                            Heart Disease
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="heart_disease"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="heart_disease"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ASTHMA -->
+
+                    <div class="field">
+
+                        <label>
+                            Asthma
+                        </label>
+
+                        <div class="choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="asthma"
+                                    value="1">
+
+                                <span>
+                                    Yes
+                                </span>
+
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="asthma"
+                                    value="0"
+                                    checked>
+
+                                <span>
+                                    No
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                class="submit-btn"
+                onclick="submitAssessment()">
+
+                🤖 Assess My Health Risk
+
+            </button>
+
+
+
+            <!-- NOTICE -->
+
+            <div class="notice">
+
+                ⚠️ <strong>Important:</strong>
+                This is an AI-assisted prototype assessment
+                and is not a medical diagnosis. If you have
+                serious or rapidly worsening symptoms, seek
+                appropriate medical care.
+
+            </div>
+
+
+
+            <!-- RESULT -->
+
+            <div id="result">
+
+                <div class="result-title">
+                    Assessment Result
+                </div>
+
+                <p id="resultText"></p>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <script>
+
+        function getValue(name) {
+
+            const selected =
+                document.querySelector(
+                    `input[name="${name}"]:checked`
+                );
+
+            return selected
+                ? Number(selected.value)
+                : 0;
+
+        }
+
+
+        async function submitAssessment() {
+
+    const getValue = (name) => {
+        const selected = document.querySelector(
+            `input[name="${name}"]:checked`
+        );
+
+        return selected ? Number(selected.value) : 0;
+    };
+
+    const age = Number(
+        document.querySelector('input[name="age"]')?.value || 0
+    );
+
+    const symptomDuration = Number(
+        document.querySelector('input[name="symptom_duration"]')?.value || 0
+    );
+
+    const data = {
+        age: age,
+        fever: getValue("fever"),
+        cough: getValue("cough"),
+        breathing_difficulty: getValue("breathing_difficulty"),
+        chest_discomfort: getValue("chest_discomfort"),
+        vomiting: getValue("vomiting"),
+        diarrhea: getValue("diarrhea"),
+        dizziness: getValue("dizziness"),
+        fainting: getValue("fainting"),
+        severe_weakness: getValue("severe_weakness"),
+        symptom_duration: symptomDuration,
+        diabetes: getValue("diabetes"),
+        hypertension: getValue("hypertension"),
+        heart_disease: getValue("heart_disease"),
+        asthma: getValue("asthma")
+    };
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/predict",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("API request failed");
+        }
+
+        const result = await response.json();
+
+        localStorage.setItem(
+            "assessmentResult",
+            JSON.stringify(result)
+        );
+
+        window.location.href = "result.html";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to connect to the AI server.\n\n" +
+            "Please make sure FastAPI is running."
+        );
+    }
+}
+
+    </script>
+
+
+</body>
+
+</html>

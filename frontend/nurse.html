@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthcare Worker Assistance | RuralHealthAI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f7;
+            color: #16332a;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dce8e4;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            color: #16855b;
+        }
+
+        .home-btn {
+            padding: 12px 25px;
+            border: 1px solid #16855b;
+            background: white;
+            color: #16855b;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .home-btn:hover {
+            background: #16855b;
+            color: white;
+        }
+
+        /* MAIN */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            color: #16855b;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #60746e;
+            font-size: 17px;
+        }
+
+        /* PATIENT CARD */
+        .patient-card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid #16855b;
+        }
+
+        .patient-title {
+            color: #16855b;
+            font-size: 25px;
+            margin-bottom: 22px;
+        }
+
+        .patient-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #f4faf7;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #70837d;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 17px;
+            font-weight: bold;
+            color: #16332a;
+        }
+
+        /* RISK */
+        .risk-section {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-title {
+            font-size: 23px;
+            color: #16332a;
+            margin-bottom: 25px;
+        }
+
+        .risk-result {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .risk-result.low {
+            background: #e7f8ef;
+            border: 1px solid #b7e8cf;
+        }
+
+        .risk-result.moderate {
+            background: #fff4d8;
+            border: 1px solid #f0d28b;
+        }
+
+        .risk-result.high {
+            background: #ffe5e5;
+            border: 1px solid #f2aaaa;
+        }
+
+        .risk-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .risk-level {
+            font-size: 34px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .risk-result.low .risk-level {
+            color: #16855b;
+        }
+
+        .risk-result.moderate .risk-level {
+            color: #b97800;
+        }
+
+        .risk-result.high .risk-level {
+            color: #d73737;
+        }
+
+        .risk-description {
+            color: #5e6d68;
+            font-size: 16px;
+        }
+
+        /* PROBABILITIES */
+        .probability {
+            margin-bottom: 22px;
+        }
+
+        .probability-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .probability-label {
+            font-size: 16px;
+        }
+
+        .probability-value {
+            font-size: 16px;
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 13px;
+            background: #e7ecea;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .low-bar {
+            background: #22a86d;
+        }
+
+        .moderate-bar {
+            background: #e7a927;
+        }
+
+        .high-bar {
+            background: #e64c4c;
+        }
+
+        /* WORKERS */
+        .workers-section {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .worker-card {
+            border: 1px solid #d9e7e2;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fbfefd;
+        }
+
+        .worker-info h3 {
+            font-size: 20px;
+            margin-bottom: 7px;
+            color: #16332a;
+        }
+
+        .worker-info p {
+            color: #647771;
+            margin: 4px 0;
+        }
+
+        .available {
+            color: #16855b !important;
+            font-weight: bold;
+        }
+
+        .connect-btn {
+            background: #16855b;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .connect-btn:hover {
+            background: #106b48;
+        }
+
+        /* SUCCESS MESSAGE */
+        .message-box {
+            display: none;
+            background: #e7f8ef;
+            border-left: 5px solid #16855b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #126746;
+            font-size: 16px;
+        }
+
+        /* SUPPORT */
+        .support-section {
+            margin-top: 30px;
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .support-card {
+            background: #f4faf7;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .support-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .support-card h3 {
+            color: #16855b;
+            margin-bottom: 8px;
+        }
+
+        .support-card p {
+            color: #667873;
+            line-height: 1.5;
+        }
+
+        /* DISCLAIMER */
+        .disclaimer {
+            margin-top: 30px;
+            background: #fff8e7;
+            border-left: 5px solid #e0a928;
+            padding: 18px;
+            border-radius: 10px;
+            color: #765c18;
+            line-height: 1.6;
+        }
+
+        /* MOBILE */
+        @media (max-width: 750px) {
+
+            .patient-info {
+                grid-template-columns: 1fr;
+            }
+
+            .worker-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .connect-btn {
+                width: 100%;
+            }
+
+            .page-title h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            🩺 RuralHealthAI
+        </div>
+
+        <button class="home-btn" onclick="goHome()">
+            Home
+        </button>
+    </header>
+
+
+    <main class="container">
+
+        <!-- PAGE TITLE -->
+        <div class="page-title">
+            <h1>Healthcare Worker Assistance</h1>
+            <p>Connect the patient with appropriate local healthcare support</p>
+        </div>
+
+
+        <!-- PATIENT ASSESSMENT -->
+        <div class="patient-card">
+
+            <div class="patient-title">
+                🏥 Patient AI Assessment
+            </div>
+
+            <div class="patient-info">
+
+                <div class="info-box">
+                    <div class="info-label">
+                        Connected Healthcare Worker
+                    </div>
+
+                    <div class="info-value" id="connectedWorker">
+                        Not selected
+                    </div>
+                </div>
+
+
+                <div class="info-box">
+                    <div class="info-label">
+                        Assessment Time
+                    </div>
+
+                    <div class="info-value" id="assessmentTime">
+                        -
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI RISK -->
+        <div class="risk-section">
+
+            <div class="section-title">
+                🤖 AI Risk Classification
+            </div>
+
+
+            <div id="riskResult" class="risk-result">
+
+                <div class="risk-icon" id="riskIcon">
+                    ⏳
+                </div>
+
+                <div class="risk-level" id="riskLevel">
+                    LOADING
+                </div>
+
+                <div class="risk-description" id="riskDescription">
+                    Loading patient assessment...
+                </div>
+
+            </div>
+
+
+            <!-- LOW -->
+            <div class="probability">
+
+                <div class="probability-header">
+                    <span class="probability-label">
+                        🟢 Low
+                    </span>
+
+                    <span class="probability-value" id="lowProbability">
+                        0%
+                    </span>
+                </div>
+
+                <div class="progress-bg">
+                    <div
+                        class="progress-bar low-bar"
+                        id="lowBar"
+                        style="width: 0%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- MODERATE -->
+            <div class="probability">
+
+                <div class="probability-header">
+                    <span class="probability-label">
+                        🟡 Moderate
+                    </span>
+
+                    <span class="probability-value" id="moderateProbability">
+                        0%
+                    </span>
+                </div>
+
+                <div class="progress-bg">
+                    <div
+                        class="progress-bar moderate-bar"
+                        id="moderateBar"
+                        style="width: 0%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- HIGH -->
+            <div class="probability">
+
+                <div class="probability-header">
+                    <span class="probability-label">
+                        🔴 High
+                    </span>
+
+                    <span class="probability-value" id="highProbability">
+                        0%
+                    </span>
+                </div>
+
+                <div class="progress-bg">
+                    <div
+                        class="progress-bar high-bar"
+                        id="highBar"
+                        style="width: 0%;">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HEALTHCARE WORKERS -->
+        <div class="workers-section">
+
+            <div class="section-title">
+                👩‍⚕️ Available Healthcare Workers
+            </div>
+
+
+            <!-- ASHA -->
+            <div class="worker-card">
+
+                <div class="worker-info">
+
+                    <h3>
+                        👩‍⚕️ ASHA Healthcare Worker
+                    </h3>
+
+                    <p>
+                        Community Health Worker
+                    </p>
+
+                    <p>
+                        📍 Nearby Rural Health Area
+                    </p>
+
+                    <p class="available">
+                        ● Available
+                    </p>
+
+                </div>
+
+                <button
+                    class="connect-btn"
+                    onclick="connectWorker('ASHA Healthcare Worker')">
+
+                    Connect
+
+                </button>
+
+            </div>
+
+
+            <!-- PHC -->
+            <div class="worker-card">
+
+                <div class="worker-info">
+
+                    <h3>
+                        👨‍⚕️ Primary Health Worker
+                    </h3>
+
+                    <p>
+                        Primary Healthcare Support
+                    </p>
+
+                    <p>
+                        📍 Local Health Centre
+                    </p>
+
+                    <p class="available">
+                        ● Available
+                    </p>
+
+                </div>
+
+                <button
+                    class="connect-btn"
+                    onclick="connectWorker('Primary Health Worker')">
+
+                    Connect
+
+                </button>
+
+            </div>
+
+
+            <!-- SUCCESS MESSAGE -->
+            <div
+                id="messageBox"
+                class="message-box">
+            </div>
+
+        </div>
+
+
+        <!-- SUPPORT -->
+        <div class="support-section">
+
+            <div class="section-title">
+                🏥 Healthcare Support
+            </div>
+
+            <div class="support-grid">
+
+                <div class="support-card">
+
+                    <div class="support-icon">
+                        🩺
+                    </div>
+
+                    <h3>
+                        ASHA Worker
+                    </h3>
+
+                    <p>
+                        Community-level healthcare assistance
+                        and patient guidance.
+                    </p>
+
+                </div>
+
+
+                <div class="support-card">
+
+                    <div class="support-icon">
+                        🏥
+                    </div>
+
+                    <h3>
+                        PHC
+                    </h3>
+
+                    <p>
+                        Primary Health Centre support
+                        for further medical evaluation.
+                    </p>
+
+                </div>
+
+
+                <div class="support-card">
+
+                    <div class="support-icon">
+                        📞
+                    </div>
+
+                    <h3>
+                        Emergency
+                    </h3>
+
+                    <p>
+                        For serious or rapidly worsening
+                        symptoms, seek appropriate emergency
+                        medical care.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DISCLAIMER -->
+        <div class="disclaimer">
+
+            ⚠️ <strong>Important:</strong>
+
+            RuralHealthAI is an AI-assisted prototype
+            decision-support system and is not a medical
+            diagnosis. Information shown here should not
+            replace evaluation by a qualified healthcare
+            professional.
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        /*
+        =========================================================
+        LOAD PATIENT ASSESSMENT
+        =========================================================
+        */
+
+        function loadAssessment() {
+
+            try {
+
+                const storedResult =
+                    localStorage.getItem("assessmentResult");
+
+                console.log(
+                    "Stored assessment result:",
+                    storedResult
+                );
+
+
+                /*
+                -------------------------------------------------
+                NO DATA
+                -------------------------------------------------
+                */
+
+                if (!storedResult) {
+
+                    showNoData();
+
+                    return;
+                }
+
+
+                /*
+                -------------------------------------------------
+                CONVERT JSON STRING TO OBJECT
+                -------------------------------------------------
+                */
+
+                let result;
+
+                try {
+
+                    result = JSON.parse(storedResult);
+
+                } catch (error) {
+
+                    console.error(
+                        "JSON parsing error:",
+                        error
+                    );
+
+                    showNoData();
+
+                    return;
+                }
+
+
+                console.log(
+                    "Parsed assessment:",
+                    result
+                );
+
+
+                /*
+                -------------------------------------------------
+                GET RISK LEVEL
+                -------------------------------------------------
+                */
+
+                let riskLevel =
+                    result.risk_level ||
+                    result.riskLevel ||
+                    "UNKNOWN";
+
+
+                riskLevel =
+                    String(riskLevel).toUpperCase();
+
+
+                /*
+                -------------------------------------------------
+                GET PROBABILITIES
+                -------------------------------------------------
+                */
+
+                let probabilities =
+                    result.probabilities || {};
+
+
+                let low =
+                    Number(
+                        probabilities.low || 0
+                    );
+
+                let moderate =
+                    Number(
+                        probabilities.moderate ||
+                        probabilities.medium ||
+                        0
+                    );
+
+                let high =
+                    Number(
+                        probabilities.high || 0
+                    );
+
+
+                /*
+                -------------------------------------------------
+                DISPLAY RISK
+                -------------------------------------------------
+                */
+
+                displayRisk(
+                    riskLevel,
+                    low,
+                    moderate,
+                    high
+                );
+
+
+                /*
+                -------------------------------------------------
+                ASSESSMENT TIME
+                -------------------------------------------------
+                */
+
+                const now =
+                    new Date();
+
+                document.getElementById(
+                    "assessmentTime"
+                ).textContent =
+                    now.toLocaleString();
+
+
+                /*
+                -------------------------------------------------
+                EXISTING WORKER CONNECTION
+                -------------------------------------------------
+                */
+
+                const connection =
+                    localStorage.getItem(
+                        "healthcareWorkerConnection"
+                    );
+
+
+                if (connection) {
+
+                    try {
+
+                        const connectionData =
+                            JSON.parse(connection);
+
+                        if (
+                            connectionData.worker
+                        ) {
+
+                            document.getElementById(
+                                "connectedWorker"
+                            ).textContent =
+                                connectionData.worker;
+
+                        }
+
+                    } catch (error) {
+
+                        console.log(
+                            "Connection data could not be parsed."
+                        );
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Nurse page error:",
+                    error
+                );
+
+                showNoData();
+            }
+
+        }
+
+
+        /*
+        =========================================================
+        DISPLAY RISK
+        =========================================================
+        */
+
+        function displayRisk(
+            riskLevel,
+            low,
+            moderate,
+            high
+        ) {
+
+            const riskResult =
+                document.getElementById(
+                    "riskResult"
+                );
+
+            const riskIcon =
+                document.getElementById(
+                    "riskIcon"
+                );
+
+            const riskLevelElement =
+                document.getElementById(
+                    "riskLevel"
+                );
+
+            const riskDescription =
+                document.getElementById(
+                    "riskDescription"
+                );
+
+
+            /*
+            -------------------------------------------------
+            REMOVE OLD CLASSES
+            -------------------------------------------------
+            */
+
+            riskResult.className =
+                "risk-result";
+
+
+            /*
+            -------------------------------------------------
+            LOW
+            -------------------------------------------------
+            */
+
+            if (riskLevel === "LOW") {
+
+                riskResult.classList.add("low");
+
+                riskIcon.textContent = "🟢";
+
+                riskLevelElement.textContent =
+                    "LOW RISK";
+
+                riskDescription.textContent =
+                    "The AI model indicates a lower-risk pattern based on the information provided.";
+
+            }
+
+
+            /*
+            -------------------------------------------------
+            MODERATE
+            -------------------------------------------------
+            */
+
+            else if (
+                riskLevel === "MODERATE" ||
+                riskLevel === "MEDIUM"
+            ) {
+
+                riskResult.classList.add(
+                    "moderate"
+                );
+
+                riskIcon.textContent = "🟡";
+
+                riskLevelElement.textContent =
+                    "MODERATE RISK";
+
+                riskDescription.textContent =
+                    "The AI model indicates a moderate-risk pattern. Consider evaluation by an appropriate healthcare worker.";
+
+            }
+
+
+            /*
+            -------------------------------------------------
+            HIGH
+            -------------------------------------------------
+            */
+
+            else if (riskLevel === "HIGH") {
+
+                riskResult.classList.add("high");
+
+                riskIcon.textContent = "🔴";
+
+                riskLevelElement.textContent =
+                    "HIGH RISK";
+
+                riskDescription.textContent =
+                    "The AI model indicates a higher-risk pattern. Prompt healthcare evaluation is appropriate.";
+
+            }
+
+
+            /*
+            -------------------------------------------------
+            UNKNOWN
+            -------------------------------------------------
+            */
+
+            else {
+
+                riskIcon.textContent = "❓";
+
+                riskLevelElement.textContent =
+                    "UNKNOWN";
+
+                riskDescription.textContent =
+                    "The assessment result could not be read.";
+
+            }
+
+
+            /*
+            -------------------------------------------------
+            PROBABILITY DISPLAY
+            -------------------------------------------------
+            */
+
+            document.getElementById(
+                "lowProbability"
+            ).textContent =
+                low.toFixed(2) + "%";
+
+
+            document.getElementById(
+                "moderateProbability"
+            ).textContent =
+                moderate.toFixed(2) + "%";
+
+
+            document.getElementById(
+                "highProbability"
+            ).textContent =
+                high.toFixed(2) + "%";
+
+
+            document.getElementById(
+                "lowBar"
+            ).style.width =
+                Math.min(low, 100) + "%";
+
+
+            document.getElementById(
+                "moderateBar"
+            ).style.width =
+                Math.min(moderate, 100) + "%";
+
+
+            document.getElementById(
+                "highBar"
+            ).style.width =
+                Math.min(high, 100) + "%";
+
+        }
+
+
+        /*
+        =========================================================
+        NO DATA
+        =========================================================
+        */
+
+        function showNoData() {
+
+            document.getElementById(
+                "riskIcon"
+            ).textContent = "❓";
+
+
+            document.getElementById(
+                "riskLevel"
+            ).textContent =
+                "NO ASSESSMENT DATA";
+
+
+            document.getElementById(
+                "riskDescription"
+            ).textContent =
+                "No patient assessment was found. Please complete an AI health assessment first.";
+
+        }
+
+
+        /*
+        =========================================================
+        CONNECT WORKER
+        =========================================================
+        */
+
+        function connectWorker(workerName) {
+
+            try {
+
+                /*
+                -------------------------------------------------
+                GET CURRENT ASSESSMENT
+                -------------------------------------------------
+                */
+
+                const assessmentResult =
+                    localStorage.getItem(
+                        "assessmentResult"
+                    );
+
+
+                /*
+                -------------------------------------------------
+                SAVE CONNECTION
+                -------------------------------------------------
+                */
+
+                const connectionData = {
+
+                    connected: true,
+
+                    worker: workerName,
+
+                    connectedAt:
+                        new Date().toISOString(),
+
+                    assessmentResult:
+                        assessmentResult
+
+                };
+
+
+                localStorage.setItem(
+                    "healthcareWorkerConnection",
+                    JSON.stringify(
+                        connectionData
+                    )
+                );
+
+
+                /*
+                -------------------------------------------------
+                UPDATE SCREEN
+                -------------------------------------------------
+                */
+
+                document.getElementById(
+                    "connectedWorker"
+                ).textContent =
+                    workerName;
+
+
+                const messageBox =
+                    document.getElementById(
+                        "messageBox"
+                    );
+
+
+                messageBox.innerHTML =
+                    "✅ <strong>Connection request created successfully.</strong><br><br>" +
+                    "<strong>" +
+                    workerName +
+                    "</strong> has been selected.<br>" +
+                    "The healthcare worker can review the patient's assessment information.";
+
+
+                messageBox.style.display =
+                    "block";
+
+
+                /*
+                -------------------------------------------------
+                SCROLL TO MESSAGE
+                -------------------------------------------------
+                */
+
+                messageBox.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Connection error:",
+                    error
+                );
+
+                alert(
+                    "Unable to create the healthcare worker connection."
+                );
+
+            }
+
+        }
+
+
+        /*
+        =========================================================
+        HOME
+        =========================================================
+        */
+
+        function goHome() {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        /*
+        =========================================================
+        START PAGE
+        =========================================================
+        */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadAssessment();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

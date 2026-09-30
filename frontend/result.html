@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Risk Assessment Result | RuralHealthAI</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f6;
+            color: #16332a;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e1e9e5;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #16855b;
+        }
+
+        .home-btn {
+            text-decoration: none;
+            color: #16855b;
+            font-weight: bold;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 42px;
+            box-shadow: 0 15px 45px rgba(22, 51, 42, 0.08);
+        }
+
+        .title-icon {
+            font-size: 50px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7771;
+            margin-bottom: 30px;
+        }
+
+        /* ================= RISK BOX ================= */
+
+        .risk-box {
+            padding: 35px 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 35px;
+            border: 1px solid transparent;
+        }
+
+        .risk-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        .risk-level {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .risk-message {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* LOW */
+
+        .risk-box.low {
+            background: #e8f8f0;
+            color: #08784e;
+            border-color: #c7ebda;
+        }
+
+        /* MODERATE */
+
+        .risk-box.moderate {
+            background: #fff5dc;
+            color: #996500;
+            border-color: #f1dda7;
+        }
+
+        /* HIGH */
+
+        .risk-box.high {
+            background: #ffe7e7;
+            color: #c62828;
+            border-color: #f3c1c1;
+        }
+
+        /* ================= PROBABILITIES ================= */
+
+        .section-title {
+            font-size: 21px;
+            margin-bottom: 22px;
+        }
+
+        .probability {
+            margin-bottom: 20px;
+        }
+
+        .probability-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .bar {
+            height: 12px;
+            background: #e5ece8;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            transition: width 0.8s ease;
+        }
+
+        .low-bar {
+            background: #20a36f;
+        }
+
+        .moderate-bar {
+            background: #e3a72f;
+        }
+
+        .high-bar {
+            background: #df4b4b;
+        }
+
+        /* ================= INTERPRETATION ================= */
+
+        .interpretation {
+            margin-top: 35px;
+            padding: 24px;
+            background: #f6faf8;
+            border-radius: 16px;
+            border: 1px solid #dce9e3;
+        }
+
+        .interpretation h2 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .interpretation p {
+            color: #596a63;
+            line-height: 1.7;
+        }
+
+        /* ================= MODERATE ACTION ================= */
+
+        .moderate-action {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background: #fff8e8;
+            border: 1px solid #efdca9;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .moderate-action h3 {
+            color: #996500;
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .moderate-action p {
+            color: #685f4b;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .worker-btn {
+            padding: 13px 22px;
+            background: #16855b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .worker-btn:hover {
+            background: #106c49;
+        }
+
+        /* ================= HIGH WARNING ================= */
+
+        .high-warning {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background: #fff0f0;
+            border: 1px solid #efbcbc;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .high-warning h3 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+
+        .high-warning p {
+            color: #6e5555;
+            line-height: 1.6;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #16855b;
+            color: white;
+            border: none;
+        }
+
+        .primary:hover {
+            background: #106c49;
+        }
+
+        .secondary {
+            background: white;
+            color: #16855b;
+            border: 1px solid #16855b;
+        }
+
+        .secondary:hover {
+            background: #f0f8f4;
+        }
+
+        /* ================= DISCLAIMER ================= */
+
+        .notice {
+            margin-top: 30px;
+            padding: 17px;
+            background: #f0f7f4;
+            border-left: 4px solid #16855b;
+            border-radius: 8px;
+            color: #65736c;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width: 600px) {
+
+            header {
+                padding: 16px 5%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 12px;
+            }
+
+            .card {
+                padding: 25px 18px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .risk-level {
+                font-size: 29px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🌿 RuralHealthAI
+        </div>
+
+        <a href="index.html" class="home-btn">
+            ← Home
+        </a>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="title-icon">
+                🩺
+            </div>
+
+            <h1>
+                AI Health Assessment
+            </h1>
+
+            <p class="subtitle">
+                Your assessment has been completed.
+            </p>
+
+
+            <!-- ================= RISK RESULT ================= -->
+
+            <div id="riskBox" class="risk-box">
+
+                <div id="riskIcon" class="risk-icon">
+                    ⏳
+                </div>
+
+                <div id="riskLevel" class="risk-level">
+                    Processing...
+                </div>
+
+                <div id="riskMessage" class="risk-message">
+                    Analyzing the assessment result...
+                </div>
+
+            </div>
+
+
+            <!-- ================= AI PROBABILITIES ================= -->
+
+            <h2 class="section-title">
+                AI Risk Distribution
+            </h2>
+
+
+            <!-- LOW -->
+
+            <div class="probability">
+
+                <div class="probability-header">
+
+                    <span>
+                        🟢 LOW
+                    </span>
+
+                    <span id="lowValue">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        id="lowBar"
+                        class="bar-fill low-bar">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MODERATE -->
+
+            <div class="probability">
+
+                <div class="probability-header">
+
+                    <span>
+                        🟡 MODERATE
+                    </span>
+
+                    <span id="moderateValue">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        id="moderateBar"
+                        class="bar-fill moderate-bar">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HIGH -->
+
+            <div class="probability">
+
+                <div class="probability-header">
+
+                    <span>
+                        🔴 HIGH
+                    </span>
+
+                    <span id="highValue">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        id="highBar"
+                        class="bar-fill high-bar">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= INTERPRETATION ================= -->
+
+            <div class="interpretation">
+
+                <h2>
+                    🤖 What does this mean?
+                </h2>
+
+                <p id="interpretationText">
+                    The system is analyzing the information you provided.
+                </p>
+
+            </div>
+
+
+            <!-- ================= MODERATE ACTION ================= -->
+
+            <div
+                id="moderateAction"
+                class="moderate-action">
+
+                <h3>
+                    🩺 Healthcare Worker Assistance
+                </h3>
+
+                <p>
+                    The assessment indicates a moderate-risk pattern.
+                    Consider discussing your symptoms with an appropriate
+                    healthcare worker, especially if they persist or worsen.
+                </p>
+
+                <button
+                    class="worker-btn"
+                    onclick="connectToNurse()">
+
+                    🩺 Connect with a Healthcare Worker →
+
+                </button>
+
+            </div>
+
+
+            <!-- ================= HIGH WARNING ================= -->
+
+            <div
+                id="highWarning"
+                class="high-warning">
+
+                <h3>
+                    ⚠️ Higher-Risk Pattern Detected
+                </h3>
+
+                <p>
+                    The assessment indicates a higher-risk pattern.
+                    Seek appropriate medical evaluation, particularly
+                    if symptoms are severe, rapidly worsening, or concerning.
+                </p>
+
+            </div>
+
+
+            <!-- ================= ACTION BUTTONS ================= -->
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    onclick="newAssessment()">
+
+                    🔄 New Assessment
+
+                </button>
+
+
+                <button
+                    class="secondary"
+                    onclick="window.print()">
+
+                    🖨️ Print Result
+
+                </button>
+
+            </div>
+
+
+            <!-- ================= DISCLAIMER ================= -->
+
+            <div class="notice">
+
+                ⚠️ <strong>Important:</strong>
+
+                This AI-assisted assessment is a prototype
+                decision-support tool and is not a medical diagnosis.
+                The result should not replace evaluation by a qualified
+                healthcare professional.
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ==========================================
+           GET RESULT FROM LOCAL STORAGE
+        ========================================== */
+
+        const storedResult =
+            localStorage.getItem("assessmentResult");
+
+
+        /* ==========================================
+           ELEMENTS
+        ========================================== */
+
+        const riskBox =
+            document.getElementById("riskBox");
+
+        const riskIcon =
+            document.getElementById("riskIcon");
+
+        const riskLevel =
+            document.getElementById("riskLevel");
+
+        const riskMessage =
+            document.getElementById("riskMessage");
+
+        const interpretationText =
+            document.getElementById("interpretationText");
+
+        const moderateAction =
+            document.getElementById("moderateAction");
+
+        const highWarning =
+            document.getElementById("highWarning");
+
+
+        /* ==========================================
+           NO RESULT
+        ========================================== */
+
+        if (!storedResult) {
+
+            riskBox.classList.add("moderate");
+
+            riskIcon.innerText = "⚠️";
+
+            riskLevel.innerText =
+                "NO ASSESSMENT FOUND";
+
+            riskMessage.innerText =
+                "Please complete a health assessment first.";
+
+            interpretationText.innerText =
+                "No assessment result is available. Please return to the assessment page and submit your information.";
+
+        }
+
+
+        /* ==========================================
+           RESULT EXISTS
+        ========================================== */
+
+        else {
+
+            try {
+
+                const result =
+                    JSON.parse(storedResult);
+
+
+                /* ===============================
+                   GET RISK
+                =============================== */
+
+                const risk =
+                    String(result.risk_level || "")
+                    .toUpperCase();
+
+
+                /* ===============================
+                   GET PROBABILITIES
+                =============================== */
+
+                const probabilities =
+                    result.probabilities || {};
+
+
+                const low =
+                    Number(probabilities.low || 0);
+
+                const moderate =
+                    Number(probabilities.moderate || 0);
+
+                const high =
+                    Number(probabilities.high || 0);
+
+
+                /* ===============================
+                   DISPLAY PROBABILITIES
+                =============================== */
+
+                document.getElementById("lowValue")
+                    .innerText =
+                    low.toFixed(2) + "%";
+
+
+                document.getElementById("moderateValue")
+                    .innerText =
+                    moderate.toFixed(2) + "%";
+
+
+                document.getElementById("highValue")
+                    .innerText =
+                    high.toFixed(2) + "%";
+
+
+                document.getElementById("lowBar")
+                    .style.width =
+                    Math.min(low, 100) + "%";
+
+
+                document.getElementById("moderateBar")
+                    .style.width =
+                    Math.min(moderate, 100) + "%";
+
+
+                document.getElementById("highBar")
+                    .style.width =
+                    Math.min(high, 100) + "%";
+
+
+                /* ===============================
+                   LOW RISK
+                =============================== */
+
+                if (risk === "LOW") {
+
+                    riskBox.classList.add("low");
+
+                    riskIcon.innerText = "🟢";
+
+                    riskLevel.innerText =
+                        "LOW RISK";
+
+                    riskMessage.innerText =
+                        "The AI model indicates a lower-risk pattern based on the information provided. Continue appropriate local care and monitor your symptoms.";
+
+                    interpretationText.innerText =
+                        "Among the three model categories, the LOW category has the highest estimated probability for this assessment.";
+
+                    moderateAction.style.display =
+                        "none";
+
+                    highWarning.style.display =
+                        "none";
+
+                }
+
+
+                /* ===============================
+                   MODERATE RISK
+                =============================== */
+
+                else if (risk === "MODERATE") {
+
+                    riskBox.classList.add("moderate");
+
+                    riskIcon.innerText = "🟡";
+
+                    riskLevel.innerText =
+                        "MODERATE RISK";
+
+                    riskMessage.innerText =
+                        "The AI model indicates a moderate-risk pattern. Consider evaluation by an appropriate healthcare worker, especially if symptoms persist or worsen.";
+
+                    interpretationText.innerText =
+                        "The MODERATE category is the model's predicted risk category for this assessment. Consider discussing the symptoms with an appropriate healthcare worker.";
+
+                    moderateAction.style.display =
+                        "block";
+
+                    highWarning.style.display =
+                        "none";
+
+                }
+
+
+                /* ===============================
+                   HIGH RISK
+                =============================== */
+
+                else if (risk === "HIGH") {
+
+                    riskBox.classList.add("high");
+
+                    riskIcon.innerText = "🔴";
+
+                    riskLevel.innerText =
+                        "HIGH RISK";
+
+                    riskMessage.innerText =
+                        "The AI model indicates a higher-risk pattern. Seek appropriate medical evaluation, particularly if symptoms are serious or worsening.";
+
+                    interpretationText.innerText =
+                        "The HIGH category is the model's predicted risk category for this assessment. Appropriate medical evaluation is important when symptoms are severe or worsening.";
+
+                    moderateAction.style.display =
+                        "none";
+
+                    highWarning.style.display =
+                        "block";
+
+                }
+
+
+                /* ===============================
+                   UNKNOWN RESULT
+                =============================== */
+
+                else {
+
+                    riskBox.classList.add("moderate");
+
+                    riskIcon.innerText = "⚠️";
+
+                    riskLevel.innerText =
+                        "RESULT UNAVAILABLE";
+
+                    riskMessage.innerText =
+                        "The system returned an unexpected risk category.";
+
+                    interpretationText.innerText =
+                        "Please perform a new assessment.";
+
+                    moderateAction.style.display =
+                        "none";
+
+                    highWarning.style.display =
+                        "none";
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Result parsing error:",
+                    error
+                );
+
+                riskBox.classList.add("moderate");
+
+                riskIcon.innerText = "⚠️";
+
+                riskLevel.innerText =
+                    "RESULT ERROR";
+
+                riskMessage.innerText =
+                    "The assessment result could not be displayed.";
+
+                interpretationText.innerText =
+                    "Please perform a new assessment.";
+
+            }
+
+        }
+
+
+        /* ==========================================
+           NEW ASSESSMENT
+        ========================================== */
+
+        function newAssessment() {
+
+            localStorage.removeItem(
+                "assessmentResult"
+            );
+
+            window.location.href =
+                "assessment.html";
+
+        }
+
+
+        /* ==========================================
+           CONNECT TO HEALTHCARE WORKER
+        ========================================== */
+
+        function connectToNurse() {
+
+        // Get the patient's AI assessment result
+        const assessmentResult =
+            localStorage.getItem("assessmentResult");
+
+        // Save the connection information
+        const connectionData = {
+            connected: true,
+            worker: "ASHA Healthcare Worker",
+            connectedAt: new Date().toISOString(),
+            assessmentResult: assessmentResult
+        };
+
+        localStorage.setItem(
+            "healthcareWorkerConnection",
+            JSON.stringify(connectionData)
+        );
+
+        // Open healthcare worker page
+        window.location.href = "nurse.html";
+    }
+
+    </script>
+
+
+</body>
+
+</html>
